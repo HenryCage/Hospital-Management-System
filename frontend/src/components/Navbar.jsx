@@ -53,7 +53,7 @@ export default function Navbar() {
           </nav>
 
           <button className="flex items-center justify-center h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:opacity-90 transition-opacity">
-            <span className="truncate">Signup</span>
+            <span className="truncate">Register</span>
           </button>
         </div>
       </div>

@@ -53,7 +53,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <p className="text-sm text-gray-500">
-            © 2024 VitaFlow. All rights reserved.
+            © 2025 VitaFlow. All rights reserved.
           </p>
         </div>
       </div>
