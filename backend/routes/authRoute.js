@@ -1,7 +1,12 @@
-import { signup } from "../controllers/auth.controller";
-import express from express;
-const Router = express.Router()
+import express from 'express';
+import { login, createStaff } from "../controllers/auth.controller.js";
+import { verifyToken } from '../middlewares/authMiddleware.js';
+import { adminOnly } from '../middlewares/roleMiddleware.js';
+import { adminSignup } from '../controllers/admin.controller.js';
+const router = express.Router()
 
-Router.post('/', signup)
+router.post('/admin/signup', adminSignup)
+router.post('/create', verifyToken, adminOnly,createStaff)
+router.post('/login', login)
 
-module.exports = Router
+export default router

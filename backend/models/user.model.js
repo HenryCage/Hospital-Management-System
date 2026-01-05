@@ -9,16 +9,23 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  date_of_birth: {
+  dob: {
     type: Date,
     required: true
   },
-  address: String,
+  gender: {
+    type: String,
+    required: true
+  },
+  department: {
+    type: String,
+    required: true
+  },
   phone: {
     type: String,
     required: true
-  }
-})
+  },
+}, {timestamps: true});
 
-const User = mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema);
 export default User

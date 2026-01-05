@@ -1,10 +1,10 @@
-import Navbar from "../components/Navbar"
-import HeroSection from "../components/Hero"
-import MissionSection from "../components/Mission"
-import FeatureSection from "../components/Feature"
-import ServicesSection from "../components/Services"
-import ContactSection from "../components/Contact"
-import Footer from "../components/Footer"
+import Navbar from "../components/homepage/Navbar"
+import HeroSection from "../components/homepage/Hero"
+import MissionSection from "../components/homepage/Mission"
+import FeatureSection from "../components/homepage/Feature"
+import ServicesSection from "../components/homepage/Services"
+import ContactSection from "../components/homepage/Contact"
+import Footer from "../components/homepage/Footer"
 
 const Home = () => {
   return (

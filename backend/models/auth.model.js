@@ -1,20 +1,25 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
+// import User from '../models/user.model.js';
 
 const authSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+    ref: 'User'
   },
   email: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   password: {
     type: String,
-    required: [true, "Password nust be more than 7 characters"]
+    required: true
+  },
+  role: {
+    type: String,
+    enums: ['admin', 'doctor', 'receptionist', 'nurse', 'pharmacist', 'accountant', 'lab'],
+    default: 'doctor'
   }
-}, {timestamps: true})
+}, {timestamps: true});
 
-const Auth = mongoose.model('Auth', authSchema)
-export default Auth
+const Auth = mongoose.model('Auth', authSchema);
+export default Auth;
