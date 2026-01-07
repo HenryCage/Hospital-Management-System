@@ -1,4 +1,3 @@
-// import { set } from "mongoose";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -36,12 +35,12 @@ export default function Signup() {
     }
 
     try {
-
-
-      const res = await fetch("http://localhost:3000/auth/signup", {
+      const token = localStorage.getItem('token');
+      const res = await fetch("http://localhost:3000/auth/create", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           firstname: form.firstname,
@@ -68,7 +67,7 @@ export default function Signup() {
       console.log(data);
 
     } catch (error) {
-      console.error('Error in signup: ' + error)
+      console.log('Error in signup: ' + error)
       alert('Failed to create account')
     }
 
@@ -163,7 +162,7 @@ export default function Signup() {
               className="input"
           />
 
-          <button className="bg-primary text-white h-12 rounded-lg font-bold mt-2 hover:bg-blue-600 transition">
+          <button onClick={() => navigate('/admin/staffs')}className="bg-primary text-white h-12 rounded-lg font-bold mt-2 hover:bg-blue-600 transition" >
             Create Account
           </button>
         </form>

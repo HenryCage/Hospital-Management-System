@@ -1,4 +1,4 @@
-import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 import Login from "./pages/Login";
 import AdminSignup from "./pages/Admin/createAdmin";
 import Home from "./pages/home";

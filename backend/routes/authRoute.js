@@ -6,7 +6,7 @@ import { adminSignup } from '../controllers/admin.controller.js';
 const router = express.Router()
 
 router.post('/admin/signup', adminSignup)
-router.post('/create', verifyToken, createStaff)
+router.post('/create', verifyToken, adminOnly, createStaff)
 router.post('/login', login)
 
 export default router
