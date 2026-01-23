@@ -1,6 +1,6 @@
 import React from "react";
-import Sidebar from '../components/receptionist/sidebar/sidebar.jsx';
-import Body from "../components/receptionist/content/Body";
+import Sidebar from '../../components/receptionist/sidebar/sidebar.jsx';
+import Body from "../../components/receptionist/content/Body.jsx";
 
 export default function ReceptionistDashboard() {
   return (

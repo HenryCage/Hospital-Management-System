@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 import { NavItem } from "../../components/admin/NavItems";
 import { StatCard } from "../../components/admin/StatCard";
 import { useNavigate } from "react-router-dom";
+import LoggingOut from "../../components/Logout";
 
 
 export default function AdminDashboard() {
+  const logout = LoggingOut();
   const [staffCount, setStaffCount] = useState(0)
 
   const navigate = useNavigate();
@@ -52,9 +54,9 @@ export default function AdminDashboard() {
           </nav>
 
 
-          <div className="border-t pt-4">
-            <NavItem icon="settings" label="Settings" />
-          </div>
+          <button onClick={logout} className="border-t pt-4 text-bold">
+            Logout
+          </button>
         </div>
       </aside>
 
@@ -68,7 +70,6 @@ export default function AdminDashboard() {
           />
         </header>
 
-        {/* Content */}
         <div className="px-8 py-8 max-w-[1200px] mx-auto flex flex-col gap-8">
           <div className="flex justify-between items-center">
             <div>
@@ -82,7 +83,6 @@ export default function AdminDashboard() {
             </button>
           </div>
 
-          {/* Stats */}
           <div className="grid md:grid-cols-3 gap-6">
             <StatCard title="Patient Intake" value="142" />
             <StatCard title="Total Staff" value={staffCount} />
@@ -90,7 +90,6 @@ export default function AdminDashboard() {
           </div>
 
 
-          {/* Recent Activity */}
           <div className="bg-white dark:bg-[#1e293b] rounded-xl border overflow-hidden">
             <div className="px-6 py-4 border-b font-bold">Recent Check-ins</div>
             <table className="w-full text-sm">

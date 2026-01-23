@@ -1,16 +1,9 @@
-export const adminOnly = (req, res, next) => {
-  if (req.user.role !== "admin") {
-    return res.status(403).json({ message: 'Admins only' });
+export const verifyRole = (roles = []) => {
+  return (req, res, next) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({ message: 'Access Denied' });
+    }
+  
+    next();
   }
-
-  next();
 }
-
-// export const adminOnly = (req, res, next) => {
-//   console.log("REQ.USER:", req.user);
-
-//   if (!req.user || req.user.role !== "admin") {
-//     return res.status(403).json({ message: "Admins only" });
-//   }
-//   next();
-// };

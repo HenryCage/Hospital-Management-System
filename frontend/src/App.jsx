@@ -2,12 +2,14 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import Login from "./pages/Login";
 import AdminSignup from "./pages/Admin/createAdmin";
 import Home from "./pages/home";
-import ReceptionistDashboard from "./pages/receptionistDashboard";
+import ReceptionistDashboard from "./pages/Receptionist/receptionistDashboard";
+import PatientRegistration from "./pages/Receptionist/PatientRegistration";
 import Signup from "./pages/Admin/CreateStaff";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import CreateStaff from "./pages/Admin/CreateStaff";
 import StaffManagement from "./pages/Admin/StaffManagement";
+import PatientManagement from "./pages/Receptionist/PatientManagement";
 
 export default function App () {
   return (
@@ -40,7 +42,18 @@ export default function App () {
             <ReceptionistDashboard/>
           </ProtectedRoute>}
         />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route 
+          path="/rcp/register" 
+          element={<ProtectedRoute allowedRoles={["receptionist"]}>
+            <PatientRegistration/>
+          </ProtectedRoute>}
+        />
+        <Route 
+          path="/rcp/patients" 
+          element={<ProtectedRoute allowedRoles={["receptionist","admin"]}>
+            <PatientManagement/>
+          </ProtectedRoute>}
+        />
       </Routes>
   )
 }

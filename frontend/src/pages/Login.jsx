@@ -35,12 +35,14 @@ export default function Login() {
         return;
       }
 
-      // store token + user
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      // 🎯 ROLE-BASED REDIRECT
-      switch (data.user.role) {
+      console.log("LOGIN RESPONSE:", data);
+      console.log("ROLE:", data?.user?.role);
+
+      const role = (data?.user?.role || "").toLowerCase();
+      switch (role) {
         case "admin":
           navigate("/admin/dashboard");
           break;

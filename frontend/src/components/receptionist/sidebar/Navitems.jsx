@@ -1,4 +1,4 @@
-export function NavItem({ icon, label, active }) {
+export function NavItem({ icon, label, active, onClick }) {
   return (
     <a
       href="#"
@@ -7,6 +7,10 @@ export function NavItem({ icon, label, active }) {
         ? "bg-primary/10 text-primary"
         : "hover:bg-gray-100 dark:hover:bg-gray-800"
       }`}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick?.();
+      }}
     >
       <span className="material-symbols-outlined">{icon}</span>
       <span className="text-sm font-medium">{label}</span>

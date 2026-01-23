@@ -77,14 +77,6 @@ export const login = async (req, res) => {
     }, process.env.JWT_SECRET, 
       { expiresIn: '1d' }
     );
-    // res.cookie('access-token', token, {
-    //   httpOnly: true,
-    //   sameSite: 'none',
-    //   secure: 'true',
-    //   path: '/'
-    // })
-    
-    // const { firstname, lastname, email: userEmail, _id } = user
 
     res.status(200).json({
       message: "Login successful",

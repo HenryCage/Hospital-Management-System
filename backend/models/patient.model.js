@@ -1,42 +1,90 @@
 import mongoose from 'mongoose'
 
 const patientSchema = new mongoose.Schema({
-  firstName: {
+  firstname: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
-  lastName: {
+  lastname: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
-  middleName: {
+  middlename: {
     type: String,
+    trim: true
   },
-  phoneNumber: {
+  email: {
+    type: String,
+    trim: true
+  },
+  phonenumber: {
     type: String,
     required: true
   },
   gender: {
     type: String,
+    enum: ["Male", "Female"],
     required: true
   },
   dob: {
     type: Date,
     required: true
   },
-  home_address: {
+  address: {
     type: String,
     required: true
   },
-  emergency_contact: {
+  emergencycontact: {
     type: String,
     required: true
   },
-  emergency_contact_number: {
+  emergencycontactnumber: {
     type: String,
+    required: true
+  },
+  emergencycontactrelationship: {
+    type: String
+  },
+  bloodgroup: {
+    type: String,
+    enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+    required: true
+  },
+  genotype: {
+    type: String,
+    enum: ["AA", "AS", "SS"]
+  },
+  weight: {
+    type: Number
+  },
+  height: {
+    type: Number
+  },
+  allergies: {
+    type: String
+  },
+  medicalhistory: {
+    type: String
+  },
+  patientId: {
+    type: String
+  },
+  registeredBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Auth",
     required: true
   }
-})
+}, {timestamps: true});
 
-const Patient = mongoose.model('Patient', patientSchema);
-export default Patient
+patientSchema.pre("save", function(next) {
+  if(!this.patientId) {
+    const year = new Date().getFullYear().toString().slice(-2);
+    const random = Math.floor(Math.random() * 9000);
+    this.patientId = `PAT-${year}-${random}`
+
+    next();
+  }
+})
+export default mongoose.model('Patient', patientSchema);
