@@ -1,4 +1,3 @@
-import express from 'express'
 import Visiting from '../models/visiting.model.js'
 import mongoose from 'mongoose'
 
@@ -9,10 +8,10 @@ export const startVisit = async (req, res) => {
     const { patientId } = req.params;
 
     if(!isValidObjectId(patientId)) {
-      return res.status(400).json({ message: 'Invalid patient ID' });
+      return res.status(200).json({ message: 'Invalid patient ID' });
     }
 
-    const openVisit = await Visiting.findOne({ patient: patientId, closedAt: null}).sort({ createdAt: -1 });
+    const openVisit = await Visiting.findOne({ patient: patientId, status: 'pending' }).sort({ createdAt: -1 });
     if (openVisit) {
       return res.status(400).json({ 
         message: 'Patient already has an open visit', 
@@ -36,15 +35,11 @@ export const startVisit = async (req, res) => {
 
 export const getPendingVisits = async (req, res) => {
   try {
-    const { patientId } = req.params;
-    if (!isValidObjectId(patientId)) {
-      return res.status(400).json({ message: 'Invalid patient ID' });
-    }
-
-    const pendingVisits = await findOne({
-      patient: patientId,
+    const pendingVisits = await find({
+      status: 'pending',
       closedAt: null
-    }).sort({ createdAt: -1 });
+    }).sort({ createdAt: -1 })
+      .populate('patient', 'patientId firstname lastname dob gender phone');
 
     res.status(200).json({ visit: pendingVisits || null });
   } catch (error) {
@@ -53,15 +48,21 @@ export const getPendingVisits = async (req, res) => {
   }
 }
 
-export const getAVisit = async (req, res) => {
+export const getAVisitbyId = async (req, res) => {
   try {
-    const { patientId } = req.params;
+    const { visitId } = req.params;
 
-    if (!isValidObjectId(patientId)) {
-      return res.status(400).json({ message: 'Invalid patient ID' });
+    if (!isValidObjectId(visitId)) {
+      return res.status(400).json({ message: 'Invalid visit ID' });
     }
 
-    const visit = await Visiting.findOne({ patient: patientId }).sort({ createdAt: -1 });
+    const visit = await Visiting.findById(visitId)
+      .populate('patient', 'patientId firstname lastname dob gender phone')
+      .populate('createdBy', 'username role');
+
+    if (!visit) {
+      return res.status(404).json({ message: 'Visit not found' })
+    }
 
     res.status(200).json({ visit });
   } catch (error) {
@@ -69,3 +70,22 @@ export const getAVisit = async (req, res) => {
     res.status(500).json({ message: 'Error getting visit' });
   }
 }
+
+export const getLatestVisit = async (req, res) => {
+  try {
+    const { patientId } = req.params;
+
+    if (!isValidObjectId(patientId)) {
+      return res.status(400).json({ message: "Invalid patient ID" });
+    }
+
+    const visit = await Visiting.findOne({ patient: patientId })
+      .sort({ createdAt: -1 })
+      .populate("patient", "patientId firstname lastname dob gender phonenumber");
+
+    res.status(200).json({ visit: visit || null });
+  } catch (error) {
+    console.error("Error getting latest visit:", error);
+    res.status(500).json({ message: "Error getting latest visit" });
+  }
+};

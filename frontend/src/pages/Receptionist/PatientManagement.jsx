@@ -1,9 +1,10 @@
-import { use, useEffect, useState } from "react";
-import { useNavigation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../utils/date";
 
 export default function PatientManagement() {
-  // const navigate = useNavigation();
+  const navigate = useNavigate();
+
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -73,6 +74,8 @@ export default function PatientManagement() {
       if (!res.ok) throw new Error (data.message || 'Failed to start visit');
 
       alert(data.resumed ? "Resumed open visit ✅" : "New visit started ✅");
+      navigate(`/rcp/visits/${data.visit._id}`);
+
     } catch (error) {
       alert(error.message);
     }
@@ -111,9 +114,6 @@ export default function PatientManagement() {
                 <td className="p-3 text-center align-middle">
                   <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2">
                     Edit
-                  </button>
-                  <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
-                    Delete
                   </button>
                   <button onClick={() => startVisit(patient._id)} className="bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-4 rounded">
                     Start Visit

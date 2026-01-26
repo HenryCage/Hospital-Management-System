@@ -14,7 +14,7 @@ const visitingSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'completed'],
+    enum: ['pending', 'admitted', 'completed'],
     default: 'pending',
     index: true
   },

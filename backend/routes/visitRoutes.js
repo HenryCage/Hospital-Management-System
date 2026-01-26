@@ -1,12 +1,14 @@
 import express from 'express';
 import { verifyToken } from '../middlewares/authMiddleware.js';
-import { getAVisit, getPendingVisits, startVisit } from '../controllers/visits.controller.js';
+import { getAVisitbyId, getLatestVisit, getPendingVisits, startVisit } from '../controllers/visits.controller.js';
 const router = express.Router();
 
 router.post('/start/:patientId', verifyToken, startVisit);
 
-router.get('/pending/:patientId', verifyToken, getPendingVisits);
+router.get('/pending', verifyToken, getPendingVisits);
 
-router.get('/patient/:patientId', verifyToken, getAVisit)
+router.get('/:visitId', verifyToken, getAVisitbyId)
 
-export default router
+router.get('latest/:patientId', verifyToken, getLatestVisit)
+
+export default router 
