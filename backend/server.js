@@ -19,8 +19,8 @@ connectDB();
 import cors from 'cors'
 app.use(cors(
   {
-    origin: '*',
-    credentials: true
+    origin: 'https://donor-management-system.vercel.app',
+    // credentials: true
   }
 ))
 
