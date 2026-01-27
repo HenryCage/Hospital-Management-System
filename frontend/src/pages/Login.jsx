@@ -47,10 +47,13 @@ export default function Login() {
           navigate("/admin/dashboard");
           break;
         case "receptionist":
-          navigate("/rcp");
+          navigate("/rcp/dashboard");
           break;
         case "doctor":
-          navigate("/doctor");
+          navigate("/doctor/dashboard");
+          break;
+        case "nurse":
+          navigate("/nurse/dashboard");
           break;
         default:
           navigate("/");

@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-// import User from '../models/user.model.js';
 
 const authSchema = new mongoose.Schema({
   userId: {

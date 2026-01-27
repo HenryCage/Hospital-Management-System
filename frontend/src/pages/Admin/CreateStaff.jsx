@@ -129,12 +129,12 @@ export default function Signup() {
           <select name="role" onChange={handleChange} className="input">
             <option value=''>Select Role</option>
             <option value='receptionist'>Receptionist</option>
-            <option value='Admin'>Admin</option>
-            <option value='Doctor'>Doctor</option>
-            <option value='Nurse'>Nurse</option>
-            <option value='Pharmacist'>Pharmacist</option>
-            <option value='Accountant'>Accountant</option>
-            <option value='Lab'>Lab</option>
+            <option value='admin'>Admin</option>
+            <option value='doctor'>Doctor</option>
+            <option value='nurse'>Nurse</option>
+            <option value='pharmacist'>Pharmacist</option>
+            <option value='accountant'>Accountant</option>
+            <option value='lab'>Lab</option>
           </select>
 
           <input

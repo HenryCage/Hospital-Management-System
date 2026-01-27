@@ -1,14 +1,31 @@
-import StatCard from "./Card"
-import CountPatients from "../../../hooks/CountPatients"
+import StatCard from "./Card";
+import useVisitCount from "../../../hooks/useVisitCounts.js";
+import usePatientsRegisteredToday from "../../../hooks/usePatientsRegister.js";
 
-export default function Stats () {
-  const { count } = CountPatients();
+export default function Stats() {
+  const todayPatients = usePatientsRegisteredToday();
+  const pendingVisits = useVisitCount("pending");
+  const admittedVisits = useVisitCount("admitted");
+
   return (
-    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <StatCard label="Number of Registered Patients" value={count} icon="event_available" />
-      <StatCard label="Doctors on Duty" value="8" icon="stethoscope" />
-      <StatCard label="Pending Labs" value="4" icon="pending_actions" />
-      <StatCard label="Available Beds" value="15" icon="bed" />
+    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <StatCard
+        label="Patients Registered Today"
+        value={todayPatients.count}
+        icon="person_add"
+      />
+
+      <StatCard
+        label="Active Visits (Pending)"
+        value={pendingVisits.count}
+        icon="hourglass_top"
+      />
+
+      <StatCard
+        label="Admitted Patients"
+        value={admittedVisits.count}
+        icon="local_hospital"
+      />
     </section>
-  )
+  );
 }

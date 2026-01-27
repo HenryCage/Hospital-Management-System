@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const getAge = (dob) => {
   if (!dob) return '';
@@ -21,6 +22,7 @@ const getAge = (dob) => {
 
 export default function VisitPage () {
   const { visitId } = useParams();
+  const navigate = useNavigate();
 
   const [visit, setVisit] = useState(null)
   const [vitals, setVitals] = useState([])
@@ -201,6 +203,7 @@ export default function VisitPage () {
 
           <div className="md:col-span-3">
             <button
+              onClick={() => navigate('/rcp/dashboard')}
               disabled={saving}
               className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded"
             >

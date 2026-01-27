@@ -1,4 +1,4 @@
-import LoggingOut from "../../Logout";
+import LoggingOut from "../Logout";
 
 export default function SideFooter () {
   const logout = LoggingOut();

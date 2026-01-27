@@ -7,6 +7,11 @@ const visitingSchema = new mongoose.Schema({
     required: true,
     index: true
   },
+  doctor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Auth',
+    default: null
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Auth',
@@ -18,10 +23,22 @@ const visitingSchema = new mongoose.Schema({
     default: 'pending',
     index: true
   },
+  labTests: {type: String, default: ''},
+  prescriptions: {type: String, default: ''},
+  diagnosis: {type: String, default: ''},
   closedAt: {
     type: Date,
     default: null
-  }
+  },
+  notesHistory: [
+    {
+      labTests: { type: String, default: "" },
+      prescriptions: { type: String, default: "" },
+      diagnosis: { type: String, default: "" },
+      savedAt: { type: Date, default: Date.now },
+      savedBy: { type: mongoose.Schema.Types.ObjectId, ref: "Auth" },
+    },
+  ]
 }, {timestamps: true});
 
 export default mongoose.model('Visiting', visitingSchema);
