@@ -1,18 +1,31 @@
-import React from "react";
-import Brand from "./details";
-import Navigation from "./navigation";
+import { NavLink } from "react-router-dom";
 import SideFooter from "./Sidefooter";
 
 export default function Sidebar() {
+  const base =
+    "block px-4 py-2 rounded hover:bg-gray-100 text-gray-700 font-medium";
+  const active = "bg-gray-200 text-gray-900";
+
   return (
-    <aside className="w-64 h-full bg-white dark:bg-[#1a2634] border-r border-[#dbe0e6] dark:border-gray-700 flex flex-col shrink-0">
-      <div className="flex flex-col h-full p-4 justify-between">
-        <div className="flex flex-col gap-6">
-          <Brand />
-          <Navigation />
-        </div>
-        <SideFooter />
-      </div>
+    <aside className="w-64 bg-white border-r p-4">
+      <h2 className="text-xl font-bold mb-6">Receptionist</h2>
+
+      <nav className="space-y-2">
+        <NavLink
+          to="/rcp/dashboard"
+          className={({ isActive }) => `${base} ${isActive ? active : ""}`}
+        >
+          Dashboard
+        </NavLink>
+
+        <NavLink
+          to="/rcp/patients"
+          className={({ isActive }) => `${base} ${isActive ? active : ""}`}
+        >
+          Patients
+        </NavLink>
+      </nav>
+      <SideFooter />
     </aside>
   );
 }

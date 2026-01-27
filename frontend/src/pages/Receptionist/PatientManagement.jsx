@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../utils/date";
+import Sidebar from "../../components/receptionist/sidebar/sidebar";
 
 export default function PatientManagement() {
   const navigate = useNavigate();
@@ -83,6 +84,8 @@ export default function PatientManagement() {
 
   return (
     <div className="p-8">
+      <Sidebar />
+
       <h2 className="text-2xl font-bold mb-6 text-center">
         Patient List
       </h2>

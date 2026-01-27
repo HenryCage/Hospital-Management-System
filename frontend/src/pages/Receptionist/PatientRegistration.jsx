@@ -143,8 +143,8 @@ export default function PatientRegistration() {
   
         <div className="flex justify-end gap-4">
           <button type="reset" className="px-6 py-3 border rounded-lg">Clear</button>
-          <button type="submit" disabled={loading} className="bg-primary text-white px-8 py-3 rounded-lg font-bold">
-            {loading ? 'Registering...' : 'Register Patient'}
+          <button type="submit"   className="bg-primary text-white px-8 py-3 rounded-lg font-bold">Register Patient
+            {/* {loading ? 'Registering...' : 'Register Patient'} */}
           </button>
         </div>
       </form>

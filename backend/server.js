@@ -17,7 +17,12 @@ app.use(express.json())
 connectDB();
 
 import cors from 'cors'
-app.use(cors())
+app.use(cors(
+  {
+    origin: 'https://donor-management-system.vercel.app',
+    credentials: true
+  }
+))
 
 app.use('/auth', authroutes);
 app.use('/users/get', userRoutes)
