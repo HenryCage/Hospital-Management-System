@@ -1,5 +1,7 @@
-import Visiting from '../models/visiting.model.js'
 import mongoose from 'mongoose'
+import Visiting from '../models/visiting.model.js'
+import Prescription from '../models/prescription.model.js'
+import PrescribedItem from "../models/prescribeditem.js";
 
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
@@ -148,11 +150,51 @@ export const updateVisitStatus = async (req, res) => {
   }
 };
 
+export const createPrescription = async (req, res) => {
+
+  try {
+    const { patientId, visitId, notes, items } = req.body;
+
+    console.log("BODY:", req.body);
+    console.log("PARAMS:", req.params);
+    console.log("USER:", req.user?._id);
+
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ message: "Prescription items required" });
+    }
+
+    const prescription = await Prescription.create({
+      patient: patientId,
+      visit: visitId,
+      doctor: req.user._id,
+      status: "pending",
+      notes
+    });
+
+    await PrescribedItem.insertMany(
+      items.map(i => ({
+        prescription: prescription._id,
+        drug: i.drug,
+        quantity: i.quantity,
+        dosage: i.dosage,
+        frequency: i.frequency,
+        duration: i.duration
+      }))
+    );
+
+    res.status(201).json({ message: "Prescription created" });
+  } catch (err) {
+    console.log("PRESCRIPTION ERROR:", err);
+    return res.status(500).json({ message: err.message });
+  }
+
+};
 
 export const doctorNotes = async (req, res) => {
   try {
     const { visitId } = req.params;
-    const { labTests, prescriptions, diagnosis } = req.body;
+    const { complaints, labTests, prescriptions, doctorNotes  } = req.body;
 
     if (!isValidObjectId(visitId)) {
       return res.status(400).json({ message: "Invalid visit ID" });
@@ -171,17 +213,19 @@ export const doctorNotes = async (req, res) => {
     if (hasExistingNotes) {
       visit.notesHistory = visit.notesHistory || [];
       visit.notesHistory.push({
+        complaints: visit.complaints || "",
         labTests: visit.labTests || "",
         prescriptions: visit.prescriptions || "",
-        diagnosis: visit.diagnosis || "",
+        doctorNotes: visit.doctorNotes || "",
         savedAt: visit.doctorUpdatedAt || new Date(),
         savedBy: visit.doctor || req.user._id,
       });
     }
 
+    visit.complaints = complaints ?? visit.complaints;
     visit.labTests = labTests ?? visit.labTests;
     visit.prescriptions = prescriptions ?? visit.prescriptions;
-    visit.diagnosis = diagnosis ?? visit.diagnosis;
+    visit.doctorNotes = doctorNotes ?? visit.doctorNotes;
 
     visit.doctor = req.user._id;
     visit.doctorUpdatedAt = new Date();
@@ -210,3 +254,19 @@ export const getAdmittedVisits = async (req, res) => {
     return res.status(500).json({ message: "Error getting admitted visits" });
   }
 };
+
+export const getAVisitHistory = async (req, res) => {
+  try {
+    const { visitId } = req.params;
+
+    const visit = await Visiting.findById(visitId)
+      .populate("patient")
+      .populate("doctor"); // adjust field names to your schema
+
+    if (!visit) return res.status(404).json({ message: "Visit not found" });
+
+    return res.json({ visit, items: [] });
+  } catch (err) {
+    return res.status(500).json({ message: "Server error" });
+  }
+}

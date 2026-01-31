@@ -84,57 +84,61 @@ export default function PatientManagement() {
 
   return (
     <div className="p-8">
-      <Sidebar />
+      <aside className="fixed left-0 top-0 h-screen w-64">
+        <Sidebar />
+      </aside>
 
-      <h2 className="text-2xl font-bold mb-6 text-center">
-        Patient List
-      </h2>
+      <main className="ml-64 p-8">
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          Patient List
+        </h2>
 
-      <div className="overflow-x-auto bg-white rounded-lg shadow">
-        <table className="w-full border-collapse">
-          <thead className="bg-gray-100 text-left">
-            <tr>
-              <th className="p-3 text-center font-semibold">Patient Id</th>
-              <th className="p-3 text-center font-semibold">Patient Name</th>
-              <th className="p-3 text-center font-semibold">Gender</th>
-              <th className="p-3 text-center font-semibold">Age</th>
-              <th className="p-3 text-center font-semibold">Phone</th>
-              <th className="p-3 text-center font-semibold">Registered</th>
-              <th className="p-3 text-center font-semibold">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {patients.map((patient) => (
-              <tr key={patient._id} className="border-t hover:bg-gray-50">
-                <td className="p-3 text-center align-middle">{patient.patientId}</td>
-                <td className="p-3 text-center align-middle">{patient.firstname} {patient.lastname}</td>
-                <td className="p-3 text-center align-middle">{patient.gender}</td>
-                <td className="p-3 text-center align-middle">{getAge(patient.dob)}</td>
-                <td className="p-3 text-center align-middle">{patient.phonenumber}</td>
-                <td className="p-3 text-center align-middle">{formatDate(patient.createdAt)}</td>
-                
-                <td className="p-3 text-center align-middle">
-                  <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2">
-                    Edit
-                  </button>
-                  <button onClick={() => startVisit(patient._id)} className="bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-4 rounded">
-                    Start Visit
-                  </button>
-                </td>
-              </tr>
-            ))}
-
-            {patients.length === 0 && (
+        <div className="overflow-x-auto bg-white rounded-lg shadow">
+          <table className="w-full border-collapse">
+            <thead className="bg-gray-100 text-left">
               <tr>
-                <td colSpan="7" className="p-3 text-center">
-                  No Patients found
-                </td>
+                <th className="p-3 text-center font-semibold">Patient Id</th>
+                <th className="p-3 text-center font-semibold">Patient Name</th>
+                <th className="p-3 text-center font-semibold">Gender</th>
+                <th className="p-3 text-center font-semibold">Age</th>
+                <th className="p-3 text-center font-semibold">Phone</th>
+                <th className="p-3 text-center font-semibold">Registered</th>
+                <th className="p-3 text-center font-semibold">Actions</th>
               </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+
+            <tbody>
+              {patients.map((patient) => (
+                <tr key={patient._id} className="border-t hover:bg-gray-50">
+                  <td className="p-3 text-center align-middle">{patient.patientId}</td>
+                  <td className="p-3 text-center align-middle">{patient.firstname} {patient.lastname}</td>
+                  <td className="p-3 text-center align-middle">{patient.gender}</td>
+                  <td className="p-3 text-center align-middle">{getAge(patient.dob)}</td>
+                  <td className="p-3 text-center align-middle">{patient.phonenumber}</td>
+                  <td className="p-3 text-center align-middle">{formatDate(patient.createdAt)}</td>
+                  
+                  <td className="p-3 text-center align-middle">
+                    <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2">
+                      Edit
+                    </button>
+                    <button onClick={() => startVisit(patient._id)} className="bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-4 rounded">
+                      Start Visit
+                    </button>
+                  </td>
+                </tr>
+              ))}
+
+              {patients.length === 0 && (
+                <tr>
+                  <td colSpan="7" className="p-3 text-center">
+                    No Patients found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </main>
     </div>
   )
 }

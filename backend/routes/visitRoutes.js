@@ -1,6 +1,6 @@
 import express from 'express';
 import { verifyToken } from '../middlewares/authMiddleware.js';
-import { doctorNotes, getAdmittedVisits, getAVisitbyId, getPendingVisits, getVisitCounts, getVisitHistory, startVisit, updateVisitStatus } from '../controllers/visits.controller.js';
+import { doctorNotes, getAdmittedVisits, getAVisitbyId, getAVisitHistory, getPendingVisits, getVisitCounts, getVisitHistory, startVisit, updateVisitStatus, createPrescription } from '../controllers/visits.controller.js';
 import { verifyRole } from '../middlewares/roleMiddleware.js';
 const router = express.Router();
 
@@ -14,7 +14,11 @@ router.get('/count', verifyToken, verifyRole(['doctor', 'nurse', 'receptionist']
 
 router.get('/patient/:patientId', verifyToken, getVisitHistory)
 
+router.get('/:visitId/history', verifyToken, getAVisitHistory)
+
 router.patch('/:visitId/doctor', verifyToken, doctorNotes)
+
+router.post('/:visitId/prescriptions', verifyToken, createPrescription)
 
 router.patch('/:visitId/status', verifyToken, verifyRole(['doctor']), updateVisitStatus)
 

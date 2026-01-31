@@ -23,18 +23,20 @@ const visitingSchema = new mongoose.Schema({
     default: 'pending',
     index: true
   },
+  complaints: String,
+  doctorNotes: String,
   labTests: {type: String, default: ''},
   prescriptions: {type: String, default: ''},
-  diagnosis: {type: String, default: ''},
   closedAt: {
     type: Date,
     default: null
   },
   notesHistory: [
     {
+      complaints: { type: String, default: "" },
+      doctorNotes: { type: String, default: "" },
       labTests: { type: String, default: "" },
       prescriptions: { type: String, default: "" },
-      diagnosis: { type: String, default: "" },
       savedAt: { type: Date, default: Date.now },
       savedBy: { type: mongoose.Schema.Types.ObjectId, ref: "Auth" },
     },

@@ -55,6 +55,9 @@ export default function Login() {
         case "nurse":
           navigate("/nurse/dashboard");
           break;
+        case "pharmacist":
+          navigate("/pharmacy/dashboard");
+          break;
         default:
           navigate("/");
       }

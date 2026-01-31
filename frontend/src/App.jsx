@@ -20,6 +20,11 @@ import DoctorPatientHistory from "./pages/Doctor/PatientHistory";
 import NurseDashboard from "./pages/Nurse/NurseDashboard";
 import NurseAdmittedPatients from "./pages/Nurse/AdmittedPatients";
 import NurseRecordVitals from "./pages/Nurse/RecordVitals";
+import VisitHistory from "./pages/Doctor/VisitHistory";
+import PharmacyDashboard from "./pages/Pharmacy/Dashboard";
+import PendingPrescriptions from "./pages/Pharmacy/PendingPrescriptions";
+import PrescriptionDetails from "./pages/Pharmacy/PrescriptionDetails";
+import DispensedRecords from "./pages/Pharmacy/DispensedRecord";
 
 export default function App () {
   return (
@@ -122,6 +127,15 @@ export default function App () {
         />
 
         <Route
+          path="/doctor/visits/:visitId/history"
+          element={
+            <ProtectedRoute allowedRoles={["doctor"]}>
+              <VisitHistory />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/nurse/dashboard"
           element={
             <ProtectedRoute allowedRoles={["nurse"]}>
@@ -148,6 +162,41 @@ export default function App () {
           }
         />
 
+        <Route
+          path="/pharmacy/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["pharmacist"]}>
+              <PharmacyDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/pharmacy/prescriptions"
+          element={
+            <ProtectedRoute allowedRoles={["pharmacist"]}>
+              <PendingPrescriptions />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/pharmacy/prescriptions/:id"
+          element={
+            <ProtectedRoute allowedRoles={["pharmacist"]}>
+              <PrescriptionDetails />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/pharmacy/dispensed"
+          element={
+            <ProtectedRoute allowedRoles={["pharmacist"]}>
+              <DispensedRecords />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
   )
 }

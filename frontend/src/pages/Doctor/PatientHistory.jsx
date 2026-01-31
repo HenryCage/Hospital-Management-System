@@ -67,7 +67,7 @@ export default function DoctorPatientHistory() {
   }, [patientId]);
 
   const openVisit = (visitId) => {
-    navigate(`/doctor/visits/${visitId}`);
+    navigate(`/doctor/visits/${visitId}/history`);
   };
 
   return (

@@ -39,10 +39,23 @@ export default function DoctorVisitPage() {
   const [error, setError] = useState(null);
 
   const [form, setForm] = useState({
+    complaints: "",
+    doctorNotes: "",
     labTests: "",
     prescriptions: "",
-    diagnosis: "",
   });
+
+  const [Items, setItems] = useState([]);
+  const [Draft, setDraft] = useState({
+    drug: "",
+    quantity: 1,
+    dosage: "",
+    frequency: "",
+    duration: "",
+  });
+  const [drugSaving, setDrugSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState("");
+
 
   const token = localStorage.getItem("token");
 
@@ -90,9 +103,10 @@ export default function DoctorVisitPage() {
       setVitals(vitalsData);
 
       setForm({
+        complaints: visitData.complaints || "",
+        doctorNotes: visitData.doctorNotes || "",
         labTests: visitData.labTests || "",
         prescriptions: visitData.prescriptions || "",
-        diagnosis: visitData.diagnosis || "",
       });
     } catch (err) {
       setError(err.message);
@@ -108,6 +122,101 @@ export default function DoctorVisitPage() {
   const onChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+    const onDraftChange = (e) => {
+    const { name, value } = e.target;
+    setDraft((prev) => ({
+      ...prev,
+      [name]: name === "quantity" ? Number(value) : value,
+    }));
+  };
+
+  const addItem = () => {
+    if (isReadOnly) return;
+
+    const drug = Draft.drug.trim();
+    if (!drug) return setError("Drug name is required.");
+
+    if (!Draft.dosage.trim() || !Draft.frequency.trim() || !Draft.duration.trim()) {
+      return setError("Dosage, frequency and duration are required.");
+    }
+
+    if (!Draft.quantity || Draft.quantity < 1) {
+      return setError("Quantity must be at least 1.");
+    }
+
+    setError(null);
+
+    setItems((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        drug,
+        quantity: Draft.quantity,
+        dosage: Draft.dosage.trim(),
+        frequency: Draft.frequency.trim(),
+        duration: Draft.duration.trim(),
+      },
+    ]);
+
+    setDraft({
+      drug: "",
+      quantity: 1,
+      dosage: "",
+      frequency: "",
+      duration: "",
+    });
+  };
+
+  const removeItem = (id) => {
+    setItems((prev) => prev.filter((x) => x.id !== id));
+  };
+
+  const submitPrescription = async () => {
+    if (isReadOnly) return;
+    if (Items.length === 0) return setError("Add at least one drug before sending to pharmacy.");
+
+    try {
+      setDrugSaving(true);
+      setSaveSuccess("");
+      setError(null);
+
+      const res = await fetch(`http://localhost:3000/visit/${visitId}/prescriptions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          patientId: visit.patient?._id,
+          visitId: visit._id,
+          notes: form.prescriptions || "", 
+          items: Items.map((x) => ({
+            drug: x.drug,
+            quantity: x.quantity,
+            dosage: x.dosage,
+            frequency: x.frequency,
+            duration: x.duration,
+          })),
+        }),
+      });
+
+      let data = null;
+      try {
+        data = await res.json();
+      } catch (e) {}
+
+      if (!res.ok) throw new Error(data?.message || "Failed to send prescription to pharmacy.");
+
+      setSaveSuccess("Prescription sent to pharmacy ✅");
+      setItems([]);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDrugSaving(false);
+    }
+  };
+
 
   if (loading) return <p className="p-8">Loading visit...</p>;
   if (error) return <p className="p-8 text-red-600">{error}</p>;
@@ -171,7 +280,8 @@ export default function DoctorVisitPage() {
       if (!res.ok) throw new Error(data?.message || "Failed to update status");
 
       setVisit(data.visit);
-      navigate("/doctor/pending");
+      if (status === "admitted") navigate("/doctor/admitted")
+      else navigate("/doctor/pending");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -238,6 +348,22 @@ export default function DoctorVisitPage() {
           <div className="bg-white rounded-lg shadow p-4">
             <h3 className="font-semibold mb-3">Doctor Notes</h3>
 
+            <div>
+              <label className="text-sm text-gray-600">Patient Complaint</label>
+              <textarea
+                name="complaints"
+                value={form.complaints}
+                onChange={onChange}
+                disabled={isReadOnly}
+                className={`w-full border rounded p-2 mt-1 min-h-[90px] ${
+                  isReadOnly ? "bg-gray-100 cursor-not-allowed" : ""
+                }`}
+                placeholder="What is the patient's complaint?"
+              />
+            </div>
+
+            
+
             <div className="space-y-3">
               <div>
                 <label className="text-sm text-gray-600">
@@ -256,36 +382,154 @@ export default function DoctorVisitPage() {
               </div>
 
               <div>
-                <label className="text-sm text-gray-600">
-                  Drugs / Prescription
-                </label>
-                <textarea
-                  name="prescriptions"
-                  value={form.prescriptions}
-                  onChange={onChange}
-                  disabled={isReadOnly}
-                  className={`w-full border rounded p-2 mt-1 min-h-[90px] ${
-                    isReadOnly ? "bg-gray-100 cursor-not-allowed" : ""
-                  }`}
-                  placeholder="e.g. Paracetamol 500mg - 1 tab 3x daily..."
-                />
+              <label className="text-sm text-gray-600">Doctor Notes</label>
+              <textarea
+                name="doctorNotes"
+                value={form.doctorNotes}
+                onChange={onChange}
+                disabled={isReadOnly}
+                className={`w-full border rounded p-2 mt-1 min-h-[90px] ${
+                  isReadOnly ? "bg-gray-100 cursor-not-allowed" : ""
+                }`}
+                placeholder=""
+              />
+            </div>
+
+              <div className="pt-2">
+                <h4 className="font-semibold mb-2">Prescriptions (Send to Pharmacy)</h4>
+
+                {saveSuccess && (
+                  <p className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-2 rounded mb-3">
+                    {saveSuccess}
+                  </p>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-sm text-gray-600">Name of Drug</label>
+                    <input
+                      name="drug"
+                      value={Draft.drug}
+                      onChange={onDraftChange}
+                      disabled={isReadOnly}
+                      className={`w-full border rounded p-2 mt-1 ${isReadOnly ? "bg-gray-100" : ""}`}
+                      placeholder="e.g. Paracetamol 500mg"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm text-gray-600">Quantity</label>
+                    <input
+                      name="quantity"
+                      type="number"
+                      min="1"
+                      value={Draft.quantity}
+                      onChange={onDraftChange}
+                      disabled={isReadOnly}
+                      className={`w-full border rounded p-2 mt-1 ${isReadOnly ? "bg-gray-100" : ""}`}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm text-gray-600">Dosage</label>
+                    <input
+                      name="dosage"
+                      value={Draft.dosage}
+                      onChange={onDraftChange}
+                      disabled={isReadOnly}
+                      className={`w-full border rounded p-2 mt-1 ${isReadOnly ? "bg-gray-100" : ""}`}
+                      placeholder="e.g. 1 tab"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm text-gray-600">Frequency</label>
+                    <input
+                      name="frequency"
+                      value={Draft.frequency}
+                      onChange={onDraftChange}
+                      disabled={isReadOnly}
+                      className={`w-full border rounded p-2 mt-1 ${isReadOnly ? "bg-gray-100" : ""}`}
+                      placeholder="e.g. 2x daily"
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="text-sm text-gray-600">Duration</label>
+                    <input
+                      name="duration"
+                      value={Draft.duration}
+                      onChange={onDraftChange}
+                      disabled={isReadOnly}
+                      className={`w-full border rounded p-2 mt-1 ${isReadOnly ? "bg-gray-100" : ""}`}
+                      placeholder="e.g. 5 days"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex gap-2 mt-3">
+                  <button
+                    type="button"
+                    onClick={addItem}
+                    disabled={isReadOnly}
+                    className="bg-gray-800 hover:bg-black text-white px-4 py-2 rounded disabled:opacity-60"
+                  >
+                    Add Drug
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={submitPrescription}
+                    disabled={isReadOnly || drugSaving || Items.length === 0}
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded disabled:opacity-60"
+                  >
+                    {drugSaving ? "Sending..." : "Send to Pharmacy"}
+                  </button>
+                </div>
+
+                <div className="mt-4 bg-gray-50 border rounded p-3">
+                  {Items.length === 0 ? (
+                    <p className="text-sm text-gray-600">No drugs added yet.</p>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead className="text-left">
+                          <tr className="border-b">
+                            <th className="py-2 pr-2">Drug</th>
+                            <th className="py-2 pr-2">Qty</th>
+                            <th className="py-2 pr-2">Dosage</th>
+                            <th className="py-2 pr-2">Frequency</th>
+                            <th className="py-2 pr-2">Duration</th>
+                            <th className="py-2">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {Items.map((x) => (
+                            <tr key={x.id} className="border-b last:border-b-0">
+                              <td className="py-2 pr-2">{x.drug}</td>
+                              <td className="py-2 pr-2">{x.quantity}</td>
+                              <td className="py-2 pr-2">{x.dosage}</td>
+                              <td className="py-2 pr-2">{x.frequency}</td>
+                              <td className="py-2 pr-2">{x.duration}</td>
+                              <td className="py-2">
+                                <button
+                                  type="button"
+                                  onClick={() => removeItem(x.id)}
+                                  disabled={isReadOnly}
+                                  className="text-red-600 hover:underline disabled:opacity-60"
+                                >
+                                  Remove
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div>
-                <label className="text-sm text-gray-600">
-                  Diagnosis / Observation
-                </label>
-                <textarea
-                  name="diagnosis"
-                  value={form.diagnosis}
-                  onChange={onChange}
-                  disabled={isReadOnly}
-                  className={`w-full border rounded p-2 mt-1 min-h-[120px] ${
-                    isReadOnly ? "bg-gray-100 cursor-not-allowed" : ""
-                  }`}
-                  placeholder="Write diagnosis and observations..."
-                />
-              </div>
 
               <div className="flex flex-wrap gap-2 pt-2">
                 {isReadOnly ? null : (
@@ -338,6 +582,15 @@ export default function DoctorVisitPage() {
                         <div className="text-sm mt-3 space-y-2">
                           <div>
                             <p className="text-gray-500 font-semibold">
+                              Patient Complaint
+                            </p>
+                            <p className="whitespace-pre-wrap">
+                              {n.complaints?.trim() ? n.complaints : "-"}
+                            </p>
+                          </div>
+
+                          <div>
+                            <p className="text-gray-500 font-semibold">
                               Lab Tests
                             </p>
                             <p className="whitespace-pre-wrap">
@@ -356,10 +609,10 @@ export default function DoctorVisitPage() {
 
                           <div>
                             <p className="text-gray-500 font-semibold">
-                              Diagnosis
+                              Doctor Notes
                             </p>
                             <p className="whitespace-pre-wrap">
-                              {n.diagnosis?.trim() ? n.diagnosis : "-"}
+                              {n.doctorNotes?.trim() ? n.doctorNotes : "-"}
                             </p>
                           </div>
                         </div>

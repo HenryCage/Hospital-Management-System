@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function PatientRegistration() {
   const navigate = useNavigate();
+  const inputClass = 'w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary';
 
   const [form, setForm] = useState({
     firstname: "",
@@ -14,6 +15,7 @@ export default function PatientRegistration() {
     dob:"",
     address:"",
     emergencycontact:"",
+    emergencycontactemail:"",
     emergencycontactnumber:"",
     emergencycontactrelationship:"",
     bloodgroup:"",
@@ -66,6 +68,7 @@ export default function PatientRegistration() {
         dob: "",
         address: "",
         emergencycontact: "",
+        emergencycontactemail: "",
         emergencycontactnumber: "",
         emergencycontactrelationship: "",
         bloodgroup: "",
@@ -76,7 +79,7 @@ export default function PatientRegistration() {
         medicalhistory: ""
       })
 
-      navigate('/rcp')
+      navigate('/rcp/dashboard')
     } catch (error) {
       setError("Couldn't Register Patient")
     }
@@ -93,17 +96,17 @@ export default function PatientRegistration() {
           <h2 className="font-bold mb-4">Personal Information</h2>
   
           <div className="grid md:grid-cols-2 gap-4">
-            <input name="firstname" placeholder="First Name" className="input" onChange={handleChange} />
-            <input name="middlename" placeholder="Middle Name" className="input" onChange={handleChange} />
-            <input name="lastname" placeholder="Last Name" className="input" onChange={handleChange} />
+            <input name="firstname" placeholder="First Name" className={inputClass} onChange={handleChange} />
+            <input name="middlename" placeholder="Middle Name" className={inputClass} onChange={handleChange} />
+            <input name="lastname" placeholder="Last Name" className={inputClass} onChange={handleChange} />
   
-            <select name="gender" className="input" onChange={handleChange}>
+            <select name="gender" className={inputClass} onChange={handleChange}>
               <option value="">Select Gender</option>
               <option>Male</option>
               <option>Female</option>
             </select>
   
-            <input type="date" name="dob" className="input" onChange={handleChange} />
+            <input type="date" name="dob" className={inputClass} onChange={handleChange} />
           </div>
         </section>
   
@@ -111,20 +114,22 @@ export default function PatientRegistration() {
           <h2 className="font-bold mb-4">Contact Details</h2>
   
           <div className="grid md:grid-cols-2 gap-4">
-            <input name="phonenumber" placeholder="Phone Number" className="input" onChange={handleChange} />
-            <input name="email" placeholder="E-Mail" className="input" onChange={handleChange} />
+            <input name="phonenumber" placeholder="Phone Number" className={inputClass} onChange={handleChange} />
+            <input name="email" placeholder="E-Mail" className={inputClass} onChange={handleChange} />
+            
           </div>
+            <textarea name="address" placeholder="Home Address" className={`${inputClass} mt-4`} rows="3" onChange={handleChange} />
   
-          <textarea name="address" placeholder="Home Address" className="input mt-4" rows="3" onChange={handleChange} />
         </section>
   
         <section className="bg-white p-6 rounded-xl shadow">
           <h2 className="font-bold mb-4">Emergency Contact</h2>
   
           <div className="grid md:grid-cols-2 gap-4">
-            <input name="emergencycontact" placeholder="Contact Name" className="input" onChange={handleChange} />
-            <input name="emergencycontactrelationship" placeholder="Relationship" className="input" onChange={handleChange} />
-            <input name="emergencycontactnumber" placeholder="Phone Number" className="input" onChange={handleChange} />
+            <input name="emergencycontact" placeholder="Contact Name" className={inputClass} onChange={handleChange} />
+            <input name="emergencycontactrelationship" placeholder="Relationship" className={inputClass} onChange={handleChange} />
+            <input name="emergencycontactnumber" placeholder="Phone Number" className={inputClass} onChange={handleChange} />
+            <input name="emergencycontactemail" placeholder="Email" className={inputClass} onChange={handleChange} />
           </div>
         </section>
   
@@ -132,18 +137,18 @@ export default function PatientRegistration() {
           <h2 className="font-bold mb-4">Medical Information</h2>
   
           <div className="grid md:grid-cols-2 gap-4">
-            <input name="bloodgroup" placeholder="Blood Group" className="input" onChange={handleChange} />
-            <input name="genotype" placeholder="Genotype" className="input" onChange={handleChange} />
-            <input name="height" placeholder="Height" className="input" onChange={handleChange} />
-            <input name="weight" placeholder="Weight" className="input" onChange={handleChange} />
-            <input name="allergies" placeholder="Allergies" className="input" onChange={handleChange} />
-            <input name="medicalhistory" placeholder="Medical History" className="input" onChange={handleChange} />
+            <input name="bloodgroup" placeholder="Blood Group" className={inputClass} onChange={handleChange} />
+            <input name="genotype" placeholder="Genotype" className={inputClass} onChange={handleChange} />
+            <input name="height" placeholder="Height in CM" className={inputClass} onChange={handleChange} />
+            <input name="weight" placeholder="Weight in KG" className={inputClass} onChange={handleChange} />
+            <input name="allergies" placeholder="Allergies" className={inputClass} onChange={handleChange} />
+            <input name="medicalhistory" placeholder="Medical History" className={inputClass} onChange={handleChange} />
           </div>
         </section>
   
         <div className="flex justify-end gap-4">
           <button type="reset" className="px-6 py-3 border rounded-lg">Clear</button>
-          <button type="submit"   className="bg-primary text-white px-8 py-3 rounded-lg font-bold">Register Patient
+          <button type="submit" className="bg-primary text-white px-8 py-3 rounded-lg font-bold">Register Patient
             {/* {loading ? 'Registering...' : 'Register Patient'} */}
           </button>
         </div>
