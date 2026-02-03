@@ -2,6 +2,7 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import Login from "./pages/Login";
 import AdminSignup from "./pages/Admin/createAdmin";
 import Home from "./pages/home";
+import OnboardingHospital from "./pages/Onboarding/OnboardingHospital.";
 import ReceptionistDashboard from "./pages/Receptionist/receptionistDashboard";
 import PatientRegistration from "./pages/Receptionist/PatientRegistration";
 import PatientManagement from "./pages/Receptionist/PatientManagement";
@@ -11,6 +12,9 @@ import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import CreateStaff from "./pages/Admin/CreateStaff";
 import StaffManagement from "./pages/Admin/StaffManagement";
+import AdminPatients from "./pages/Admin/AdminPatients";
+import AdminPatientsDetails from "./pages/Admin/AdminPatientsDetails";
+import EditStaff from "./pages/Admin/EditStaff";
 import Dashboard from "./pages/Doctor/Dashboard";
 import PendingVisits from "./pages/Doctor/PendingPatients";
 import DoctorVisitPage from "./pages/Doctor/DoctorVisitPage";
@@ -29,9 +33,10 @@ import DispensedRecords from "./pages/Pharmacy/DispensedRecord";
 export default function App () {
   return (
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path="/" element={<Home />} />
+        <Route path='/onboarding' element={<OnboardingHospital />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/ad-signup" element={<AdminSignup />} />
+        <Route path="//onboarding/admin/:hospitalId" element={<AdminSignup />} />
         <Route path="/login" element={<Login />} />
         <Route 
           path="/admin/dashboard" 
@@ -51,6 +56,27 @@ export default function App () {
           path="/admin/staffs" 
           element={<ProtectedRoute allowedRoles={["admin"]}>
             <StaffManagement/>
+          </ProtectedRoute>}
+        />
+
+        <Route 
+          path="/admin/staffs/:id/edit" 
+          element={<ProtectedRoute allowedRoles={["admin"]}>
+            <EditStaff/>
+          </ProtectedRoute>}
+        />
+
+        <Route 
+          path="/admin/patients" 
+          element={<ProtectedRoute allowedRoles={["admin"]}>
+            <AdminPatients/>
+          </ProtectedRoute>}
+        />
+        
+        <Route 
+          path="/admin/patients/:id" 
+          element={<ProtectedRoute allowedRoles={["admin"]}>
+            <AdminPatientsDetails/>
           </ProtectedRoute>}
         />
 

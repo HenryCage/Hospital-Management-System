@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function AdminSignup() {
   const navigate = useNavigate();
+  const { hospitalId } = useParams(); // ✅ get hospitalId from route
 
   const [form, setForm] = useState({
     firstname: "",
@@ -24,19 +25,16 @@ export default function AdminSignup() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:3000/auth/admin/signup", {
+      const res = await fetch("http://localhost:3000/auth/admin/create", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, hospitalId }), // ✅ attach hospitalId
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => null);
 
       if (!res.ok) {
-        setError(data.message || "Admin setup failed");
-        setLoading(false);
+        setError(data?.message || "Admin setup failed");
         return;
       }
 
@@ -57,9 +55,13 @@ export default function AdminSignup() {
           Create the system administrator account
         </p>
 
-        {error && (
-          <p className="text-red-600 text-sm mb-3">{error}</p>
+        {!hospitalId && (
+          <p className="text-amber-700 bg-amber-50 border border-amber-200 text-sm p-3 rounded mb-4">
+            Missing hospital ID. Please start onboarding from the hospital setup page.
+          </p>
         )}
+
+        {error && <p className="text-red-600 text-sm mb-3">{error}</p>}
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex gap-3">
@@ -104,8 +106,8 @@ export default function AdminSignup() {
           />
 
           <button
-            disabled={loading}
-            className="bg-blue-600 text-white py-2 rounded"
+            disabled={loading || !hospitalId}
+            className="bg-blue-600 text-white py-2 rounded disabled:opacity-60"
           >
             {loading ? "Creating admin..." : "Create Admin"}
           </button>
@@ -113,10 +115,7 @@ export default function AdminSignup() {
 
         <p className="text-sm text-center mt-4">
           Already have an admin?{" "}
-          <Link
-            to="/login"
-            className="text-blue-600 font-medium"
-          >
+          <Link to="/login" className="text-blue-600 font-medium">
             Login
           </Link>
         </p>

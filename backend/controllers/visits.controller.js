@@ -22,6 +22,7 @@ export const startVisit = async (req, res) => {
     }
 
     const visit = await Visiting.create({
+      hospitalId: req.user.hospitalId,
       patient: patientId,
       createdBy: req.user._id,
       status: 'pending',
@@ -165,6 +166,7 @@ export const createPrescription = async (req, res) => {
     }
 
     const prescription = await Prescription.create({
+      hospitalId: req.user.hospitalId,
       patient: patientId,
       visit: visitId,
       doctor: req.user._id,

@@ -1,4 +1,3 @@
-import React from "react";
 
 export default function ServicesSection() {
   return (
@@ -10,13 +9,11 @@ export default function ServicesSection() {
         </h2>
 
         <p className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-text-light dark:text-text-dark">
-          Comprehensive Management Solutions
+          Comprehensive Hospital Management Solutions
         </p>
 
         <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-          Explore our suite of services designed to cover every aspect of the
-          blood supply chain, from donor to transfusion, ensuring safety and
-          efficiency at every step.
+          Explore our complete suite of tools designed to support every aspect of hospital operations — from patient registration to treatment, pharmacy, admissions, and reporting — all in one integrated platform.
         </p>
       </div>
 
@@ -26,29 +23,25 @@ export default function ServicesSection() {
         <div className="flex flex-col gap-6">
           <div className="p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
             <h3 className="text-xl font-bold text-text-light dark:text-text-dark">
-              Inventory Management
+              Patient & Visit Management
             </h3>
             <p className="mt-2 text-gray-600 dark:text-gray-400">
-              Real-time tracking of blood units, automated alerts for low stock
-              levels, and proactive expiration management to minimize waste and
-              prevent shortages.
+              Easily register patients, track consultations, admissions, medical history, and treatment progress with a structured and secure digital system.
             </p>
           </div>
 
           <div className="p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
             <h3 className="text-xl font-bold text-text-light dark:text-text-dark">
-              Donor Coordination
+              Pharmacy & Prescriptions
             </h3>
             <p className="mt-2 text-gray-600 dark:text-gray-400">
-              Streamline donor recruitment and management with integrated
-              communication tools, appointment scheduling, and detailed donor
-              history logs.
+              Send prescriptions directly from doctors to pharmacists, manage dispensed drugs, and maintain clear medication records for every patient.
             </p>
           </div>
 
           <div className="p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
             <h3 className="text-xl font-bold text-text-light dark:text-text-dark">
-              Reporting &amp; Analytics
+              Reports & Hospital Records
             </h3>
             <p className="mt-2 text-gray-600 dark:text-gray-400">
               Leverage powerful data analytics to forecast demand, optimize
@@ -62,7 +55,7 @@ export default function ServicesSection() {
         <div className="sticky top-24">
           <img
             className="w-full h-auto rounded-xl object-cover aspect-[4/3]"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfu8LLS2u0OOvmIhWMS4aqTTyaaQKzkq-rqDLEKBKft9600iuzslCLlmP1JkR04m5opa3-ImCS3GZWjj5O0LgOJcBA2FDXXZxqyQ3SKbkWwYGZAP9EEjwPs4WH1RCUBSiBG8j-KtKieGf8A8lrvjLcSjkCAcvDgDTwTFbInW83dJlTEf4G_ptGYiQ-6Jh4tRJukNB0WHHi9RGL0hWRngyIdGkcpaBJiFaB0PxcRE5IWjJZ5Li8L4tcPO0KRqXdnQPMmOS8_d4_KSA"
+            src="https://plus.unsplash.com/premium_photo-1681842883882-b5c1c9f37869?q=80&w=881&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Scientist working in a modern laboratory, representing healthcare technology"
           />
         </div>

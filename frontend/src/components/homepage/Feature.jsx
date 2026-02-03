@@ -6,12 +6,11 @@ export default function FeatureSection() {
       {/* Heading */}
       <div className="flex flex-col gap-4 text-center">
         <h1 className="text-3xl sm:text-4xl font-bold sm:font-black tracking-[-0.033em] leading-tight max-w-2xl mx-auto">
-          A Smarter Way to Manage Blood Supply
+          A Smarter Way to Run Your Hospital
         </h1>
 
         <p className="text-base leading-normal max-w-3xl mx-auto text-gray-600 dark:text-gray-300">
-          VitaFlow provides the critical tools your facility needs to maintain an
-          optimal blood inventory, reduce waste, and ensure compliance.
+          Your system provides everything hospitals need to manage daily operations efficiently — from patient intake to treatment and discharge.
         </p>
       </div>
 
@@ -24,10 +23,9 @@ export default function FeatureSection() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <h2 className="text-lg font-bold leading-tight">Real-Time Inventory</h2>
+            <h2 className="text-lg font-bold leading-tight">Patient Management</h2>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Monitor your entire blood supply with live updates, automated alerts
-              for low stock, and expiration tracking.
+              Register patients, track medical history, visits, and vital records in one organized system for easy access and continuity of care.
             </p>
           </div>
         </div>
@@ -39,10 +37,9 @@ export default function FeatureSection() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <h2 className="text-lg font-bold leading-tight">Seamless Donor Tracking</h2>
+            <h2 className="text-lg font-bold leading-tight">Staff & Workflow Coordination</h2>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Manage donor information, history, and communication efficiently to
-              ensure a steady and safe supply.
+              Manage doctors, nurses, pharmacists, and departments seamlessly to ensure smooth communication and faster service delivery.
             </p>
           </div>
         </div>
@@ -54,10 +51,9 @@ export default function FeatureSection() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <h2 className="text-lg font-bold leading-tight">Advanced Analytics</h2>
+            <h2 className="text-lg font-bold leading-tight">Integrated Pharmacy & Records</h2>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Gain data-driven insights into usage patterns, demand forecasting,
-              and operational performance.
+              Send prescriptions directly to the pharmacy, track dispensed medications, and maintain accurate treatment histories.
             </p>
           </div>
         </div>

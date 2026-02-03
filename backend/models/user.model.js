@@ -1,6 +1,15 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
+  hospitalId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Hospital",
+    required: true
+  },
+  staffId: {
+    type: String,
+    unique: true
+  },
   firstname: {
     type: String,
     required: true
@@ -26,6 +35,16 @@ const userSchema = new mongoose.Schema({
     required: true
   },
 }, {timestamps: true});
+
+userSchema.pre("save", function(next) {
+  if(!this.staffId) {
+    const year = new Date().getFullYear().toString().slice(-2);
+    const random = Math.floor(Math.random() * 9999);
+    this.staffId = `STAFF-${year}-${random}`
+  }
+  next();
+})
+
 
 const User = mongoose.model('User', userSchema);
 export default User

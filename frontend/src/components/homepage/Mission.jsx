@@ -9,15 +9,11 @@ export default function MissionSection() {
         </h2>
 
         <p className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-text-light dark:text-text-dark">
-          Empowering Healthcare Providers
+          Empowering Hospitals to Deliver Better Care
         </p>
 
         <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-          Our mission is to empower healthcare providers by streamlining the
-          complexities of blood management. We are dedicated to enhancing patient
-          safety and improving outcomes by providing a reliable, intuitive, and
-          efficient system for tracking and managing blood supplies from donor to
-          recipient.
+          Our mission is to simplify hospital operations by bringing patient records, staff management, consultations, and pharmacy workflows into one secure platform. We help healthcare providers reduce paperwork, improve efficiency, and deliver faster, safer, and more organized care for every patient.
         </p>
       </div>
     </section>

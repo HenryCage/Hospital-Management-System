@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
 const authSchema = new mongoose.Schema({
+  hospitalId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Hospital",
+    required: true
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
@@ -19,6 +24,7 @@ const authSchema = new mongoose.Schema({
     default: 'doctor'
   }
 }, {timestamps: true});
+
 
 const Auth = mongoose.model('Auth', authSchema);
 export default Auth;

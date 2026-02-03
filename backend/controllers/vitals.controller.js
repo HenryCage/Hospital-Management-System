@@ -19,6 +19,7 @@ export const createVitals = async (req, res) => {
     }
 
     const vitals = await Vitals.create({
+      hospitalId: req.user.hospitalId,
       visit: visitId,
       patient: existingVisit.patient,
       recordedBy: req.user._id,

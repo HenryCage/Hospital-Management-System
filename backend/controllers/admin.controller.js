@@ -1,14 +1,13 @@
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import Auth from "../models/auth.model.js";
 import User from "../models/user.model.js";
 
 export const adminSignup = async (req, res) => {
-  const { firstname, lastname, email, password } = req.body;
+  const { firstname, lastname, email, password, hospitalId } = req.body;
 
-  const existingAdmin = await Auth.findOne({ role: "admin" });
+  const existingAdmin = await Auth.findOne({ role: "admin", hospitalId });
   if (existingAdmin) {
-    res.status(400).json({ message: "Admin already exist" });
+    return res.status(400).json({ message: "Admin already exist" });
   }
 
   try {
@@ -25,9 +24,18 @@ export const adminSignup = async (req, res) => {
       email,
       password: hashedPassword,
       role: "admin",
+      hospitalId
     });
 
-    res.status(201).json(admin);
+    res.status(201).json({
+      message: "Admin created successfully",
+      admin: {
+        id: admin._id,
+        email: admin.email,
+        role: admin.role,
+        hospitalId: admin.hospitalId,
+      }
+    });
   } catch (error) {
     console.log('Error in admin creation');
     res.status(500).json({ message: error.message });

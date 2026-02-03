@@ -15,7 +15,7 @@ export default function ContactSection() {
           </h2>
 
           <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-            Ready to see how VitaFlow can transform your facility's blood
+            Ready to see how VitaFlow can transform your hospital
             management? Fill out the form, and our team will get in touch to
             schedule a personalized demo.
           </p>

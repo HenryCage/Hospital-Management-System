@@ -56,8 +56,8 @@ export default function Navbar() {
             </a>
           </nav>
 
-          <button className="flex items-center justify-center h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:opacity-90 transition-opacity" type="button" onClick={() => navigate("/login")}>
-            <span className="truncate">Login</span>
+          <button className="flex items-center justify-center h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:opacity-90 transition-opacity" type="button" onClick={() => navigate("/onboarding")}>
+            <span className="truncate">Get Started</span>
           </button>
         </div>
       </div>

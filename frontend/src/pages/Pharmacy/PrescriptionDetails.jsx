@@ -74,56 +74,80 @@ export default function PrescriptionDetails() {
         <p><b>Date:</b> {new Date(prescription.createdAt).toLocaleDateString()}</p>
       </div>
 
-      <div className="bg-white rounded shadow overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="p-3 text-left">Drug</th>
-              <th className="p-3">Dosage</th>
-              <th className="p-3">Frequency</th>
-              <th className="p-3">Duration</th>
-              <th className="p-3">Prescribed Qty</th>
-              <th className="p-3">Dispense Qty</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((i, idx) => (
-              <tr key={i._id} className="border-t">
-                <td className="p-3">{i.drug.name}</td>
-                <td className="p-3">{i.dosage}</td>
-                <td className="p-3">{i.frequency}</td>
-                <td className="p-3">{i.duration}</td>
-                <td className="p-3">{i.quantity}</td>
-                <td className="p-3">
-                  <input
-                    type="number"
-                    min="0"
-                    value={i.dispenseQty}
-                    onChange={e => handleChange(idx, e.target.value)}
-                    className="border rounded px-2 py-1 w-20"
-                  />
-                </td>
+      <div className="bg-white rounded-2xl shadow border overflow-hidden">
+        <div className="px-6 py-4 border-b bg-gray-50">
+          <h3 className="text-lg font-semibold">Prescribed Drugs</h3>
+          <p className="text-sm text-gray-500">Review and dispense medication</p>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-100">
+              <tr className="text-gray-700">
+                <th className="px-6 py-3 text-left">Drug</th>
+                <th className="px-6 py-3 text-left">Dosage</th>
+                <th className="px-6 py-3 text-left">Frequency</th>
+                <th className="px-6 py-3 text-left">Duration</th>
+                <th className="px-6 py-3 text-center">Prescribed</th>
+                <th className="px-6 py-3 text-center">Dispense</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {items.map((item, i) => (
+                <tr
+                  key={i}
+                  className="border-t hover:bg-gray-50 transition"
+                >
+                  <td className="px-6 py-4 font-medium">{item.drug}</td>
+
+                  <td className="px-6 py-4">{item.dosage}</td>
+
+                  <td className="px-6 py-4">{item.frequency}</td>
+
+                  <td className="px-6 py-4">{item.duration}</td>
+
+                  <td className="px-6 py-4 text-center font-semibold text-gray-700">
+                    {item.quantity}
+                  </td>
+
+                  <td className="px-6 py-4 text-center">
+                    <input
+                      type="number"
+                      min="1"
+                      max={item.quantity}
+                      value={item.dispenseQty}
+                      onChange={(e) =>
+                        handleQtyChange(i, Number(e.target.value))
+                      }
+                      className="w-20 text-center border rounded-lg px-2 py-1.5
+                                focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Action Bar */}
+        <div className="flex justify-between items-center px-6 py-4 bg-gray-50 border-t">
+          <button
+            onClick={() => navigate(-1)}
+            className="px-4 py-2 rounded-lg border text-gray-700 hover:bg-gray-100 transition"
+          >
+            ← Back
+          </button>
+
+          <button
+            onClick={handleDispense}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-lg font-semibold transition"
+          >
+            Dispense Drugs
+          </button>
+        </div>
       </div>
 
-      <div className="mt-6 flex gap-4">
-        <button
-          onClick={() => navigate(-1)}
-          className="bg-gray-600 text-white px-4 py-2 rounded"
-        >
-          Back
-        </button>
-
-        <button
-          onClick={handleDispense}
-          className="bg-emerald-600 text-white px-6 py-2 rounded hover:bg-emerald-700"
-        >
-          Dispense Drugs
-        </button>
-      </div>
     </div>
   );
 }

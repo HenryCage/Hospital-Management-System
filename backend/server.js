@@ -8,6 +8,7 @@ import patientRoutes from './routes/patientRoute.js'
 import visitRoutes from './routes/visitRoutes.js'
 import vitalsRoutes from './routes/vitalsRoute.js'
 import pharmacistRoutes from './routes/pharmacistRoutes.js'
+import hospitalRoutes from './routes/hospitalRoutes.js'
 
 dotenv.config();
 const port = process.env.PORT
@@ -26,11 +27,12 @@ app.use(cors(
 ))
 
 app.use('/auth', authroutes);
-app.use('/users/get', userRoutes)
+app.use('/users', userRoutes)
 app.use('/patient', patientRoutes)
 app.use('/visit', visitRoutes)
 app.use('/vitals', vitalsRoutes)
 app.use('/pharmacy', pharmacistRoutes)
+app.use('/onboarding', hospitalRoutes)
 
 app.listen(port, () => {
   console.log('Server is Running on port ' + port)

@@ -5,7 +5,7 @@ import { verifyRole } from '../middlewares/roleMiddleware.js';
 import { adminSignup } from '../controllers/admin.controller.js';
 const router = express.Router()
 
-router.post('/admin/signup', adminSignup)
+router.post('/admin/create', adminSignup)
 router.post('/create', verifyToken, verifyRole(['admin']), createStaff)
 router.post('/login', login)
 

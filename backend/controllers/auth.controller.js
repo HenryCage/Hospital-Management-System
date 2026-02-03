@@ -1,10 +1,11 @@
 import User from "../models/user.model.js"
 import Auth from "../models/auth.model.js";
+import Hospital from '../models/hospital.model.js'
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
 export const createStaff = async (req, res) => {
-  const { firstname, lastname, dob, gender, department, phone, email, password, role } = req.body;
+  const { firstname, lastname, dob, gender, department, phone, email, password, role, hospitalId } = req.body;
 
   if (!firstname || !lastname || !dob || !gender || !department || !phone || !email || !password) {
     return res.status(400).json({message: 'All fields are Required'})
@@ -22,27 +23,29 @@ export const createStaff = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({
+    const user = await User.create({
       firstname,
       lastname,
       dob,
       gender,
-      email,
       department,
       phone,
+      hospitalId: req.user.hospitalId
     })
-    await user.save();
+    console.log("CREATED USER:", user);
+
     
     const userid = user._id;
     const auth = new Auth({
       userId: userid,
       email,
       password: hashedPassword,
-      role
+      role,
+      hospitalId: req.user.hospitalId
     })
     await auth.save();
 
-    return res.status(200).json({ msg: 'User created successfully', user
+    return res.status(201).json({ msg: 'User created successfully', user
      })
   } catch (error) {
     console.log('Error in signup controller');
@@ -64,6 +67,8 @@ export const login = async (req, res) => {
       return res.status(400).json({message: 'This user does not exist'})
     }
     
+    const hospital = await Hospital.findById(user.hospitalId).select("hospitalId name")
+
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return res.status(400).json({message: 'Invalid login details'})
@@ -73,7 +78,8 @@ export const login = async (req, res) => {
 
     const token = jwt.sign({ 
       id: user._id, 
-      role: user.role 
+      role: user.role, 
+      hospitalId: user.hospitalId,
     }, process.env.JWT_SECRET, 
       { expiresIn: '1d' }
     );
@@ -85,7 +91,12 @@ export const login = async (req, res) => {
         id: user._id,
         email: user.email,
         role: user.role,
-        firstname: user.firstname
+        firstname: user.firstname,
+        hospital: hospital ? {
+          id: hospital._id,
+          hospitalId: hospital.hospitalId,
+          name: hospital.name
+        } : null
       }
     })
   } catch (error) {
